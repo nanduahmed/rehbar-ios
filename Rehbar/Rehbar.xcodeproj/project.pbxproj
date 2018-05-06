@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E2375161209A857400EAFFD8 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2375160209A857400EAFFD8 /* Persistence.swift */; };
+		E2375163209AA52600EAFFD8 /* BrotherListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2375162209AA52600EAFFD8 /* BrotherListTableViewCell.swift */; };
+		E23CF1182099189000829C98 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23CF1172099189000829C98 /* ThirdViewController.swift */; };
 		E243D65A2093F1D5002A658E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243D6592093F1D5002A658E /* AppDelegate.swift */; };
 		E243D65C2093F1D5002A658E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243D65B2093F1D5002A658E /* FirstViewController.swift */; };
 		E243D65E2093F1D5002A658E /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E243D65D2093F1D5002A658E /* SecondViewController.swift */; };
@@ -18,6 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E2375160209A857400EAFFD8 /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Persistence.swift; path = Model/Models/Persistence.swift; sourceTree = "<group>"; };
+		E2375162209AA52600EAFFD8 /* BrotherListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BrotherListTableViewCell.swift; path = Controllers/BrotherListTableViewCell.swift; sourceTree = "<group>"; };
+		E23CF1172099189000829C98 /* ThirdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThirdViewController.swift; path = Controllers/TabViewControllers/ThirdViewController.swift; sourceTree = "<group>"; };
 		E243D6562093F1D5002A658E /* Rehbar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rehbar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E243D6592093F1D5002A658E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E243D65B2093F1D5002A658E /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -41,6 +47,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E23CF1152099184300829C98 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E23CF1162099185200829C98 /* TabViewControllers */,
+				E2375162209AA52600EAFFD8 /* BrotherListTableViewCell.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		E23CF1162099185200829C98 /* TabViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E243D65B2093F1D5002A658E /* FirstViewController.swift */,
+				E243D65D2093F1D5002A658E /* SecondViewController.swift */,
+				E23CF1172099189000829C98 /* ThirdViewController.swift */,
+			);
+			name = TabViewControllers;
+			sourceTree = "<group>";
+		};
 		E243D64D2093F1D4002A658E = {
 			isa = PBXGroup;
 			children = (
@@ -60,10 +85,9 @@
 		E243D6582093F1D5002A658E /* Rehbar */ = {
 			isa = PBXGroup;
 			children = (
+				E23CF1152099184300829C98 /* Controllers */,
 				E243D66D2093F353002A658E /* Model */,
 				E243D6592093F1D5002A658E /* AppDelegate.swift */,
-				E243D65B2093F1D5002A658E /* FirstViewController.swift */,
-				E243D65D2093F1D5002A658E /* SecondViewController.swift */,
 				E243D65F2093F1D5002A658E /* Main.storyboard */,
 				E243D6622093F1D5002A658E /* Assets.xcassets */,
 				E243D6642093F1D5002A658E /* LaunchScreen.storyboard */,
@@ -93,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				E243D6722093F44E002A658E /* Places.swift */,
+				E2375160209A857400EAFFD8 /* Persistence.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -173,7 +198,10 @@
 				E243D6732093F44E002A658E /* Places.swift in Sources */,
 				E243D6702093F38D002A658E /* NetworkManager.swift in Sources */,
 				E243D65E2093F1D5002A658E /* SecondViewController.swift in Sources */,
+				E2375161209A857400EAFFD8 /* Persistence.swift in Sources */,
 				E243D65A2093F1D5002A658E /* AppDelegate.swift in Sources */,
+				E23CF1182099189000829C98 /* ThirdViewController.swift in Sources */,
+				E2375163209AA52600EAFFD8 /* BrotherListTableViewCell.swift in Sources */,
 				E243D65C2093F1D5002A658E /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

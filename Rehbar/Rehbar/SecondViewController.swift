@@ -30,12 +30,12 @@ class SecondViewController: UIViewController {
     }
     
     private func showPins() {
-        var annonations = [MKPointAnnotation]()
+        var annonations = [MKAnnotation]()
         if (displayMultiple) {
             let places = Models.shared.brothers
             for place in places {
-                if let location = place.place.coordinates {
-                    let annonation = self.addPin(coordinates: location)
+                if let location = place.place.coordinates , let add = place.address , let name = place.firstName  {
+                    let annonation = self.addBortherPin(title: name, subTitle: add, coordinates: location)
                     annonations.append(annonation)
                 }
             }
@@ -55,6 +55,13 @@ class SecondViewController: UIViewController {
         return pin
     }
     
+    private func addBortherPin(title:String ,subTitle:String, coordinates:CLLocationCoordinate2D) -> MKAnnotation {
+        let pin = BrotherAnnonation(c: coordinates)
+        pin.title = title
+        pin.subtitle = subTitle
+        return pin
+    }
+    
     func downloadCoordinates()  {
         for bro in Models.shared.brothers {
             let add = bro.address! + ",Santa Clara"
@@ -69,6 +76,37 @@ class SecondViewController: UIViewController {
             self.showPins()
         }
     }
+}
 
+class BrotherAnnonation : NSObject, MKAnnotation {
+    var title: String?
+    let coordinate: CLLocationCoordinate2D
+    var subtitle: String?
+    init(c:CLLocationCoordinate2D) {
+        self.coordinate = c
+        super.init()
+    }
+}
+
+extension SecondViewController : MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation is MKUserLocation{
+            return nil;
+        }else{
+            let pinIdent = "Pin";
+            var pinView: MKPinAnnotationView;
+            if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: pinIdent) as? MKPinAnnotationView {
+                dequeuedView.annotation = annotation;
+                pinView = dequeuedView;
+            }else{
+                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: pinIdent)
+                pinView.canShowCallout = true
+                pinView.calloutOffset = CGPoint(x: -5, y: 5)
+                pinView.rightCalloutAccessoryView = UIButton(type: UIButtonType.detailDisclosure)
+                
+            }
+            return pinView;
+        }
+    }
 }
 

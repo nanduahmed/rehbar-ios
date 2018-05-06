@@ -19,29 +19,45 @@ class FirstViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let s = "149uZmIOtYsV5iozJB-QvbjVjRGZeP0gag_ukLyF0qT8"
-        
-        NetworkManager.shared.getSheetsData(spreadsheetId: s) { (success, data, brothers) -> (Void) in
-            DispatchQueue.main.async {
-                self.tbView.reloadData()
-            }
-        }
-           // Do any additional setup after loading the view, typically from a nib.
+          // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.getData()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    private func getData() {
+        if let spreadheetId = PersistenceStore.retreiveValue(type: StoreValue.spreadsheetId) {
+            NetworkManager.shared.getSheetsData(spreadsheetId: spreadheetId) { (success, data, brothers) -> (Void) in
+                DispatchQueue.main.async {
+                    self.tbView.reloadData()
+                }
+            }
+        } else {
+            let alert = UIAlertController(title: "Configure Error", message: "Please go to settings panel and set your spreadheet link", preferredStyle: UIAlertControllerStyle.alert)
+            
+            let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (action) in
+                
+            })
+            alert.addAction(action)
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0, execute: { 
+                self.present(alert, animated: true, completion: nil)
+            })
+        }
+
+    }
 
 
 }
 
 extension FirstViewController : UITableViewDataSource , UITableViewDelegate {
-    
-//    func numberOfSections(in tableView: UITableView) -> Int {// Default is 1 if not implemented
-//        return 2
-//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -52,17 +68,24 @@ extension FirstViewController : UITableViewDataSource , UITableViewDelegate {
         
         let bro = Models.shared.brothers[indexPath.row + 1]
     
-        let cell = tableView.dequeueReusableCell(withIdentifier: "identifier")
+        /*let cell = tableView.dequeueReusableCell(withIdentifier: "identifier")
         cell?.textLabel?.text = Models.shared.brothers[indexPath.row + 1].firstName
         let add = bro.address! + "- Comments" + bro.comments!
         cell?.detailTextLabel?.text = add
+        return cell!*/
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "brotherCellId") as? BrotherListTableViewCell
+        cell?.nameLabel.text = bro.firstName! + " " +  bro.lastName!
+        cell?.dateLabel.text = "1 May 2018"
+        cell?.addressLabel.text = bro.address
+        cell?.commentLabel.text = bro.comments
+        
         return cell!
     }
     
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        self.performSegue(withIdentifier: "toMapSegue", sender: indexPath)
     }
     
 }
