@@ -13,12 +13,6 @@ class ThirdViewController: UIViewController , UITextViewDelegate {
     @IBOutlet weak var sheetLinkTextFiled: UITextField!
     @IBOutlet weak var statusTextView: UITextView!
     
-    @IBAction func onDone(_ sender: Any) {
-        
-        
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 

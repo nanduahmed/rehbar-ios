@@ -12,4 +12,22 @@ import Foundation
 enum RehbarError : Error {
     case IndexNotAvailable
     case InvalidUrl
+    case InvalidSpreadSheet
+    case SpreadSheetIdNotConfigured
+    
+    
+    func message(id:String?) -> String {
+        switch self {
+        case .SpreadSheetIdNotConfigured:
+            return "Your Spreadsheet ID is not configured"
+        case .InvalidSpreadSheet:
+            if let message = id {
+                return "Spreadsheet id - \(message) does not gives response "
+            } else {
+                return "Configuredpreadsheet id does not gives response "
+            }
+        default:
+            return "Unknown Error"
+        }
+    }
 }

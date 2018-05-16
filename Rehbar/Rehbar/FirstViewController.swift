@@ -72,11 +72,11 @@ class FirstViewController: BaseViewController {
                         Models.shared.currentSheet = spsheet
                         self?.getData()
                     } else {
-                        self?.showError(title: "Error", message: "A:Error Downloading Data. Please verify your link or excel sheet data")
+                        self?.showError(title: "Error", message: RehbarError.InvalidSpreadSheet.message(id: spreadheetId))
                     }
                 }
             } else {
-                self.showError(title: "Error", message: "B:Error Downloading Data. Please verify your link or excel sheet data")
+                self.showError(title: "Error", message: RehbarError.SpreadSheetIdNotConfigured.message(id: nil))
             }
         }
     }
@@ -102,14 +102,12 @@ class FirstViewController: BaseViewController {
                                 weakSelf.filteredBrothers.removeFirst(1)
                             }
                             weakSelf.tbView.reloadData()
-                            let odx = CFGetRetainCount(self)
-                            print(odx.description)
                         }
                     }
                 } else {
                     DispatchQueue.main.async(execute: {
                         self?.refreshControl.endRefreshing()
-                        self?.showError(title: "Error", message: "C:Error Downloading Data. Please verify your link or excel sheet data")
+                        self?.showError(title: "Error", message: "Error Downloading Data. Please verify your link or excel sheet data")
                     })
                 }
             }
@@ -150,7 +148,9 @@ extension FirstViewController : UITableViewDataSource , UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: "broDetailSegue", sender: filteredBrothers[indexPath.row])
+        if (filteredBrothers.count > 0) {
+            self.performSegue(withIdentifier: "broDetailSegue", sender: filteredBrothers[indexPath.row])
+        } 
     }
     
 }
