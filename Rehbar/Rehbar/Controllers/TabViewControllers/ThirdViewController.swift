@@ -11,6 +11,7 @@ import UIKit
 class ThirdViewController: UIViewController , UITextViewDelegate {
 
     @IBOutlet weak var sheetLinkTextFiled: UITextField!
+    @IBOutlet weak var statusTextView: UITextView!
     
     @IBAction func onDone(_ sender: Any) {
         
@@ -40,15 +41,37 @@ class ThirdViewController: UIViewController , UITextViewDelegate {
     }
     */
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //https://docs.google.com/spreadsheets/d/149uZmIOtYsV5iozJB-QvbjVjRGZeP0gag_ukLyF0qT8/edit?usp=sharing
 //        let regex = "https://docs.google.com/spreadsheets/d/149uZmIOtYsV5iozJB-QvbjVjRGZeP0gag_ukLyF0qT8/edit?usp=sharing"
         if let spreadsheetId = textField.text {
-        print(spreadsheetId)
-        PersistenceStore.store(value: spreadsheetId, type: StoreValue.spreadsheetId)
+            print(spreadsheetId)
+            self.getSheetData(spID: spreadsheetId)
+            PersistenceStore.store(value: spreadsheetId, type: StoreValue.spreadsheetId)
         }
         textField.resignFirstResponder()
         return true
+    }
+    
+    func getSheetData(spID:String)  {
+        NetworkManager.shared.getIndexing(spreadSheetId: spID) { (success, data, any) -> (Void) in
+            if (success == true && data != nil) {
+                let spsheet = SpreadSheet(data: data!)
+                Models.shared.currentSheet = spsheet
+                DispatchQueue.main.async {
+                    var sheetInfo = "Spreadsheet Name\n"
+
+                    if let name =  spsheet.spreadSheetName {
+                        sheetInfo.append("\(name) \n")
+                    }
+                    sheetInfo.append("Num Rows - \(spsheet.rows)\n")
+                    sheetInfo.append("Num Columns - \(spsheet.columns)")
+                    
+                    self.statusTextView.text = sheetInfo
+                    
+                }
+            }
+        }
     }
     
 }

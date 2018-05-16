@@ -11,6 +11,8 @@ import Foundation
 import CoreLocation
 
 
+typealias JsonDict = [String:Any]
+
 enum PlacesStatus:String {
     case Ok = "OK"
     case ZeroResults = "ZERO_RESULTS"
@@ -22,29 +24,103 @@ class Place {
     var coordinates:CLLocationCoordinate2D?
 }
 
+struct BrotherItemIndexes {
+    var firstNameIndex = -1
+    var lastNameIndex = -1
+    var addressIndex = -1
+    var cityIndex = -1
+    var zipcodeIndex = -1
+    var lastVisitedIndex = -1
+    var commentsIndex = -1
+    
+    private var count = 0
+
+    init(data:[String]) {
+        for (index,column) in data.enumerated() {
+            switch column.lowercased() {
+            case "first name","firstname":
+                firstNameIndex = index
+                count += 1
+                break
+            case "last name", "lastname":
+                lastNameIndex = index
+                count += 1
+                break
+            case "address":
+                addressIndex = index
+                count += 1
+                break
+            case "city":
+                cityIndex = index
+                count += 1
+                break
+            case "zip code" , "zipcode", "zip":
+                zipcodeIndex = index
+                count += 1
+                break
+            case "date visited","datevisited":
+                lastVisitedIndex = index
+                //count += 1
+                break
+            case "comments":
+                commentsIndex = index
+                //count += 1
+                break
+            default:
+                break
+            }
+        }
+    }
+    
+    func isIndexItemValid() -> Bool {
+        return count >= 5
+    }
+}
+
 struct Brother {
     var firstName:String?
     var lastName:String?
     var address:String?
+    var city:String?
     var zipcode:String?
     var lastVisited:String?
-    var comments:String?
+    var comments:[String]?
+    
+    var success = false
     
     var place:Place = Place()
     
     
-    init(data:[String]?) {
-        if let fn = data?[0],
-            let ln = data?[1],  
-            let add = data?[2],
-            let zip = data?[3],
-            let comments = data?[6] {
+    init?(data:[String]?) {
+        guard let brotherIndex = Models.shared.brotherIndex else {
+           return nil
+        }
+        
+        if let fn = data?[brotherIndex.firstNameIndex],
+            let ln = data?[brotherIndex.lastNameIndex],
+            let add = data?[brotherIndex.addressIndex],
+            let city = data?[brotherIndex.cityIndex],
+            let zip = data?[brotherIndex.zipcodeIndex] {
             
             self.firstName = fn
             self.lastName = ln
             self.address = add
+            self.city = city
             self.zipcode = zip
-            self.comments = comments
+            self.success = true
+        }
+
+        if (data?.indices.contains(brotherIndex.lastVisitedIndex) == true) {
+            if let date = data?[brotherIndex.lastVisitedIndex] {
+                self.lastVisited = date
+            }
+        }
+        
+        if (data?.indices.contains(brotherIndex.commentsIndex) == true) {
+            if let comments = data?[brotherIndex.commentsIndex] {
+                let commentsArray = comments.components(separatedBy: ".")
+                self.comments = commentsArray
+            }
         }
     }
     
@@ -55,7 +131,26 @@ struct Brother {
 
 class SpreadSheet {
     var spreadSheetId:String?
-    var brothers:[Brother] = [Brother]()
+    var spreadSheetName:String?
+    var rows:UInt = 0
+    var columns:UInt = 0
+    
+    init(data:[String:Any]) {
+        if let properties = data["properties"] as? [String:Any] ,
+            let sheets = data["sheets"] as? [Any] ,
+            let name = properties["title"] as? String ,
+            let firstSheet = sheets.first as? [String:Any],
+            let firstSheetProps = firstSheet["properties"] as? [String:Any] ,
+            let gridProps = firstSheetProps["gridProperties"] as? [String:Any],
+            
+            let rowCount = gridProps["rowCount"] as? UInt,
+            let colCount = gridProps["columnCount"] as? UInt {
+            
+            self.rows = rowCount
+            self.columns = colCount
+            self.spreadSheetName = name
+        }
+    }
 }
 
 
@@ -65,8 +160,12 @@ class Models {
     
     var all:[Place] = [Place]()
     var brothers:[Brother] = [Brother]()
-
     var status:PlacesStatus = .Unknown
+    var brotherIndex:BrotherItemIndexes?
+    
+    var currentSheet:SpreadSheet?
+    
+    var searchText:String?
     
     public func create(data:[String:Any]) {
         self.all.removeAll()
@@ -103,12 +202,26 @@ class Models {
             let values = firstRange["values"] as? [Any] {
             for item in values {
                 if let brothers = item as? [String] {
-                    let model = Brother(data: brothers)
-                    self.brothers.append(model)
+                    if let model = Brother(data: brothers) {
+                        self.brothers.append(model)
+                    }
                 }
             }
-            
         }
+    }
+    
+    public func checkForIndex(data:JsonDict) -> Bool {
+        if let content = data["valueRanges"] as? [Any] ,
+            let firstRange = content.first as? [String:Any],
+            let values = firstRange["values"] as? [Any] {
+            
+            if let header = values.first as? [String] {
+                let itemIndexes = BrotherItemIndexes(data: header)
+                self.brotherIndex = itemIndexes
+                return itemIndexes.isIndexItemValid()
+            }
+        }
+        return false
     }
 
     init() {
