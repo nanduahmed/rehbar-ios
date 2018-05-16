@@ -420,6 +420,7 @@
                     <connections>
                         <outlet property="activityIndicator" destination="lXS-MW-5od" id="zSE-7Y-5UG"/>
                         <outlet property="mapView" destination="nbi-fq-4hP" id="sS8-ys-JDK"/>
+                        <segue destination="1wB-O3-adT" kind="show" identifier="broDetailSegue" id="qhS-Lw-wVF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
@@ -509,4 +510,7 @@
         <image name="tabMap" width="25" height="25"/>
         <image name="tabSettings" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="qhS-Lw-wVF"/>
+    </inferredMetricsTieBreakers>
 </document>
