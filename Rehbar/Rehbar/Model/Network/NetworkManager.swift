@@ -42,7 +42,6 @@ class NetworkManager {
             
         }
         task.resume()
-        
     }
     
     func getIndexing(spreadSheetId:String , completion:@escaping NetworkCompletionType)  {
