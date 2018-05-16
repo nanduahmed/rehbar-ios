@@ -22,9 +22,9 @@ enum RehbarError : Error {
             return "Your Spreadsheet ID is not configured"
         case .InvalidSpreadSheet:
             if let message = id {
-                return "Spreadsheet id - \(message) does not gives response "
+                return "Spreadsheet id error - \(message)"
             } else {
-                return "Configuredpreadsheet id does not gives response "
+                return "Configured spreadsheet id does not gives response"
             }
         default:
             return "Unknown Error"

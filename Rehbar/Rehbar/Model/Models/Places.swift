@@ -73,7 +73,30 @@ struct BrotherItemIndexes {
     }
     
     func isIndexItemValid() -> Bool {
-        return count >= 5
+        return count >= 4
+    }
+    
+    func indexMissingInfo() -> String {
+        var value = "Missing Coumns in your excel sheet are "
+        if self.addressIndex == -1 {
+            value += "Address, "
+        }
+        if self.cityIndex == -1 {
+            value += "City, "
+        }
+        if self.commentsIndex == -1 {
+            value += "Comments, "
+        }
+        if self.firstNameIndex == -1 {
+            value += "First Name, "
+        }
+        if self.lastNameIndex == -1 {
+            value += "Last Name, "
+        }
+        if self.zipcodeIndex == -1 {
+            value += "Zip Code"
+        }
+        return value
     }
 }
 
@@ -96,20 +119,38 @@ struct Brother {
            return nil
         }
         
-        if let fn = data?[brotherIndex.firstNameIndex],
-            let ln = data?[brotherIndex.lastNameIndex],
-            let add = data?[brotherIndex.addressIndex],
-            let city = data?[brotherIndex.cityIndex],
-            let zip = data?[brotherIndex.zipcodeIndex] {
+        let containsFirstName = data?.indices.contains(brotherIndex.firstNameIndex)
+        let containsLastName = data?.indices.contains(brotherIndex.lastNameIndex)
+        let containsAddress = data?.indices.contains(brotherIndex.addressIndex)
+        let containsCity = data?.indices.contains(brotherIndex.cityIndex)
+        let containsZipCode = data?.indices.contains(brotherIndex.zipcodeIndex)
+
+        
+        if ( containsFirstName! &&
+            containsLastName! &&
+            containsAddress! &&
+            containsCity! ){
             
-            self.firstName = fn
-            self.lastName = ln
-            self.address = add
-            self.city = city
-            self.zipcode = zip
-            self.success = true
+            if let fn = data?[brotherIndex.firstNameIndex],
+                let ln = data?[brotherIndex.lastNameIndex],
+                let add = data?[brotherIndex.addressIndex],
+                let city = data?[brotherIndex.cityIndex]{
+                
+                self.firstName = fn
+                self.lastName = ln
+                self.address = add
+                self.city = city
+                self.success = true
+            }
         }
 
+        if (data?.indices.contains(brotherIndex.zipcodeIndex) == true) {
+            if let date = data?[brotherIndex.zipcodeIndex] {
+                self.zipcode = date
+            }
+        }
+        
+        
         if (data?.indices.contains(brotherIndex.lastVisitedIndex) == true) {
             if let date = data?[brotherIndex.lastVisitedIndex] {
                 self.lastVisited = date
@@ -135,6 +176,8 @@ class SpreadSheet {
     var rows:UInt = 0
     var columns:UInt = 0
     
+    var success = false
+    
     init(data:[String:Any]) {
         if let properties = data["properties"] as? [String:Any] ,
             let sheets = data["sheets"] as? [Any] ,
@@ -149,7 +192,13 @@ class SpreadSheet {
             self.rows = rowCount
             self.columns = colCount
             self.spreadSheetName = name
+            success = true
         }
+        
+        if let error = data["error"] as? JsonDict,
+            let message = error["message"] as? String {
+                self.spreadSheetName = "Error: " + message
+            }
     }
 }
 
@@ -202,7 +251,8 @@ class Models {
             let values = firstRange["values"] as? [Any] {
             for item in values {
                 if let brothers = item as? [String] {
-                    if let model = Brother(data: brothers) {
+                    if let model = Brother(data: brothers),
+                        (model.success == true) {
                         self.brothers.append(model)
                     }
                 }

@@ -57,11 +57,12 @@ class FirstViewController: BaseViewController {
     }
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-        self.getData()
+        self.checkRows()
     }
     
     private func checkRows() {
-        if let sheet = Models.shared.currentSheet ,
+        if let sheet = Models.shared.currentSheet,
+            (Models.shared.currentSheet?.success == true),
             (sheet.rows > 0) {
             getData()
         } else {
@@ -70,9 +71,13 @@ class FirstViewController: BaseViewController {
                     if (success == true && data != nil) {
                         let spsheet = SpreadSheet(data: data!)
                         Models.shared.currentSheet = spsheet
-                        self?.getData()
+                        if (spsheet.success == true) {
+                            self?.getData()
+                        } else {
+                            self?.showError(title: "Spreadsheet Error", message: RehbarError.InvalidSpreadSheet.message(id: spsheet.spreadSheetName))
+                        }
                     } else {
-                        self?.showError(title: "Error", message: RehbarError.InvalidSpreadSheet.message(id: spreadheetId))
+                        self?.showError(title: "Error", message: RehbarError.InvalidSpreadSheet.message(id: "\(spreadheetId) gives no response"))
                     }
                 }
             } else {
@@ -107,7 +112,13 @@ class FirstViewController: BaseViewController {
                 } else {
                     DispatchQueue.main.async(execute: {
                         self?.refreshControl.endRefreshing()
-                        self?.showError(title: "Error", message: "Error Downloading Data. Please verify your link or excel sheet data")
+                        if let rehbarError = error as? RehbarError,
+                            (rehbarError == RehbarError.IndexNotAvailable),
+                            let missingIdxMsg = Models.shared.brotherIndex?.indexMissingInfo() {
+                            self?.showError(title: "Your Excel sheet not valid", message: missingIdxMsg)
+                        } else {
+                            self?.showError(title: "Error", message: "Error Downloading Data. Please verify your link or excel sheet data")
+                        }
                     })
                 }
             }
