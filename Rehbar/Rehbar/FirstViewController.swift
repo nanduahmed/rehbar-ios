@@ -16,6 +16,7 @@ class FirstViewController: BaseViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var errorLabel: UILabel!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     var gettingSheetsData = false
     
     lazy var refreshControl: UIRefreshControl = {
@@ -64,9 +65,11 @@ class FirstViewController: BaseViewController {
         if let sheet = Models.shared.currentSheet,
             (Models.shared.currentSheet?.success == true),
             (sheet.rows > 0) {
+            self.activityIndicator.startAnimating()
             getData()
         } else {
             if let spreadheetId = PersistenceStore.retreiveValue(type: StoreValue.spreadsheetId) {
+                self.activityIndicator.startAnimating()
                 NetworkManager.shared.getIndexing(spreadSheetId: spreadheetId) {[weak self] (success, data, _) -> (Void) in
                     if (success == true && data != nil) {
                         let spsheet = SpreadSheet(data: data!)
@@ -74,10 +77,16 @@ class FirstViewController: BaseViewController {
                         if (spsheet.success == true) {
                             self?.getData()
                         } else {
-                            self?.showError(title: "Spreadsheet Error", message: RehbarError.InvalidSpreadSheet.message(id: spsheet.spreadSheetName))
+                            DispatchQueue.main.async {
+                                self?.activityIndicator.stopAnimating()
+                                self?.showError(title: "Spreadsheet Error", message: RehbarError.InvalidSpreadSheet.message(id: spsheet.spreadSheetName))
+                            }
                         }
                     } else {
-                        self?.showError(title: "Error", message: RehbarError.InvalidSpreadSheet.message(id: "\(spreadheetId) gives no response"))
+                        DispatchQueue.main.async {
+                            self?.activityIndicator.stopAnimating()
+                            self?.showError(title: "Error", message: RehbarError.InvalidSpreadSheet.message(id: "\(spreadheetId)"))
+                        }
                     }
                 }
             } else {
@@ -90,7 +99,6 @@ class FirstViewController: BaseViewController {
         if self.gettingSheetsData == true {
             return
         }
-        
         self.gettingSheetsData = true
         if let spreadheetId = PersistenceStore.retreiveValue(type: StoreValue.spreadsheetId),
             spreadheetId.count > 5 {
@@ -99,6 +107,7 @@ class FirstViewController: BaseViewController {
                 self?.gettingSheetsData = false
                 if (success == true && brothers != nil) {
                     DispatchQueue.main.async {
+                        self?.activityIndicator.stopAnimating()
                         self?.refreshControl.endRefreshing()
                         if let downloadedBrothers = brothers ,
                             let weakSelf = self {
@@ -111,6 +120,7 @@ class FirstViewController: BaseViewController {
                     }
                 } else {
                     DispatchQueue.main.async(execute: {
+                        self?.activityIndicator.stopAnimating()
                         self?.refreshControl.endRefreshing()
                         if let rehbarError = error as? RehbarError,
                             (rehbarError == RehbarError.IndexNotAvailable),
@@ -127,7 +137,6 @@ class FirstViewController: BaseViewController {
                 self.showError(title:"Configure Error", message:"Please go to settings panel and set your spreadheet link")
             })
         }
-
     }
 
 }

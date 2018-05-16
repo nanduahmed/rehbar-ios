@@ -73,7 +73,10 @@ struct BrotherItemIndexes {
     }
     
     func isIndexItemValid() -> Bool {
-        return count >= 4
+        return (self.firstNameIndex >= 0) &&
+        (self.lastNameIndex >= 0) &&
+        (self.addressIndex >= 0) &&
+        self.cityIndex >= 0
     }
     
     func indexMissingInfo() -> String {

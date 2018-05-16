@@ -23,12 +23,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q6X-FZ-j2w">
-                                <rect key="frame" x="5" y="323.5" width="365" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="v9y-BU-d5O">
                                 <rect key="frame" x="0.0" y="68" width="375" height="549"/>
                                 <subviews>
@@ -137,21 +131,36 @@
                                     </tableView>
                                 </subviews>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="A0O-0k-Vhw">
+                                <rect key="frame" x="0.0" y="223" width="375" height="20"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ccP-iS-eT2">
+                                        <rect key="frame" x="177.5" y="0.0" width="20" height="20"/>
+                                        <color key="color" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </activityIndicatorView>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q6X-FZ-j2w">
+                                        <rect key="frame" x="168.5" y="-223" width="38" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="q6X-FZ-j2w" firstAttribute="centerX" secondItem="UrO-s4-GUc" secondAttribute="centerX" id="1ox-s5-Ob5"/>
-                            <constraint firstItem="q6X-FZ-j2w" firstAttribute="centerY" secondItem="UrO-s4-GUc" secondAttribute="centerY" id="CPe-W2-Cqw"/>
-                            <constraint firstAttribute="trailing" secondItem="q6X-FZ-j2w" secondAttribute="trailing" constant="5" id="NhE-KE-qq8"/>
-                            <constraint firstItem="q6X-FZ-j2w" firstAttribute="leading" secondItem="UrO-s4-GUc" secondAttribute="leading" constant="5" id="dBq-k2-rnv"/>
+                            <constraint firstItem="A0O-0k-Vhw" firstAttribute="centerY" secondItem="UrO-s4-GUc" secondAttribute="centerY" multiplier="0.7" id="WE7-R0-NoP"/>
+                            <constraint firstItem="A0O-0k-Vhw" firstAttribute="centerX" secondItem="UrO-s4-GUc" secondAttribute="centerX" id="Zoc-CF-wkD"/>
                             <constraint firstItem="v9y-BU-d5O" firstAttribute="leading" secondItem="UrO-s4-GUc" secondAttribute="leading" id="dvw-xC-4EH"/>
                             <constraint firstItem="v9y-BU-d5O" firstAttribute="top" secondItem="UrO-s4-GUc" secondAttribute="top" constant="68" id="mFT-o3-vWM"/>
+                            <constraint firstItem="A0O-0k-Vhw" firstAttribute="width" secondItem="UrO-s4-GUc" secondAttribute="width" id="myv-Fx-Aoc"/>
                             <constraint firstItem="hgV-gb-zut" firstAttribute="top" secondItem="v9y-BU-d5O" secondAttribute="bottom" constant="1" id="wsT-j9-CTg"/>
                             <constraint firstAttribute="trailing" secondItem="v9y-BU-d5O" secondAttribute="trailing" id="xPd-fO-vHM"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="WkN-K5-zkq"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="ccP-iS-eT2" id="UBr-DF-03A"/>
                         <outlet property="errorLabel" destination="q6X-FZ-j2w" id="CNI-Yl-yrq"/>
                         <outlet property="searchBar" destination="oP1-Dm-mvk" id="cEk-1u-gVi"/>
                         <outlet property="tbView" destination="kt8-a5-Eso" id="bJ4-DE-dDs"/>
