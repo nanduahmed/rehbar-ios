@@ -21,6 +21,7 @@ class SecondViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addObservers()
         
         self.downloadCoordinates()
         // Do any additional setup after loading the view, typically from a nib.
@@ -31,11 +32,23 @@ class SecondViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    deinit {
+        removeObservers()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let bro = sender as? Brother ,
             let broDetailVC = segue.destination as? BrotherDetailViewController {
             broDetailVC.selectedBrother = bro
         }
+    }
+    
+    private func addObservers()  {
+        NotificationCenter.default.addObserver(self, selector: #selector(downloadCoordinates), name: NSNotification.Name(StoreValue.spreadsheetId.rawValue), object: nil)
+    }
+    
+    private func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(StoreValue.spreadsheetId.rawValue), object: nil)
     }
     
     @IBAction func onRefresh(_ sender: UIBarButtonItem) {
@@ -96,8 +109,10 @@ class SecondViewController: BaseViewController {
         return pin
     }
     
-    func downloadCoordinates()  {
-        self.activityIndicator.startAnimating()
+    @objc func downloadCoordinates()  {
+        DispatchQueue.main.async {
+            self.activityIndicator.startAnimating()
+        }
         var brothers = Models.shared.brothers
         if brothers.count > 0 {
             brothers.removeFirst()

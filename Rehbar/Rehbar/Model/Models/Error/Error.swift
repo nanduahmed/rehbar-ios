@@ -19,12 +19,12 @@ enum RehbarError : Error {
     func message(id:String?) -> String {
         switch self {
         case .SpreadSheetIdNotConfigured:
-            return "Your Spreadsheet ID is not configured"
+            return "Your Spreadsheet is not configured. Please go to settings page and configure your spreadsheet"
         case .InvalidSpreadSheet:
             if let message = id {
-                return "Spreadsheet id error - \(message)"
+                return "Spreadsheet error - \(message)"
             } else {
-                return "Configured spreadsheet id does not gives response"
+                return "Configured spreadsheet does not gives response"
             }
         default:
             return "Unknown Error"

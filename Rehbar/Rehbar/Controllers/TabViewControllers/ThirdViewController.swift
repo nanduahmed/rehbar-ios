@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ThirdViewController: UIViewController , UITextViewDelegate {
+class ThirdViewController: BaseViewController , UITextViewDelegate {
 
     @IBOutlet weak var sheetLinkTextFiled: UITextField!
     @IBOutlet weak var statusTextView: UITextView!
@@ -36,15 +36,24 @@ class ThirdViewController: UIViewController , UITextViewDelegate {
     */
     
     @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        //https://docs.google.com/spreadsheets/d/149uZmIOtYsV5iozJB-QvbjVjRGZeP0gag_ukLyF0qT8/edit?usp=sharing
-//        let regex = "https://docs.google.com/spreadsheets/d/149uZmIOtYsV5iozJB-QvbjVjRGZeP0gag_ukLyF0qT8/edit?usp=sharing"
-        if let spreadsheetId = textField.text {
+        if let link = textField.text,
+            let spreadsheetId = self.getSpreadSheetId(from: link) {
             print(spreadsheetId)
             self.getSheetData(spID: spreadsheetId)
             PersistenceStore.store(value: spreadsheetId, type: StoreValue.spreadsheetId)
+        } else {
+            self.showError(title: "Error", message: "Your Spreadsheet link is not valid")
         }
         textField.resignFirstResponder()
         return true
+    }
+    
+    func getSpreadSheetId(from link:String) -> String? {
+        let array = link.split(separator: "/")
+        if (array.count > 5) {
+            return String(array[4])
+        }
+        return nil
     }
     
     func getSheetData(spID:String)  {
@@ -52,6 +61,7 @@ class ThirdViewController: UIViewController , UITextViewDelegate {
             if (success == true && data != nil) {
                 let spsheet = SpreadSheet(data: data!)
                 Models.shared.currentSheet = spsheet
+                NotificationCenter.default.post(name: NSNotification.Name(StoreValue.spreadsheetId.rawValue), object: StoreValue.spreadsheetId)
                 DispatchQueue.main.async {
                     var sheetInfo = "Spreadsheet Name\n"
 

@@ -32,7 +32,20 @@ class FirstViewController: BaseViewController {
         super.viewDidLoad()
         self.tbView.addSubview(self.refreshControl)
         self.checkRows()
+        self.addObservers()
           // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    deinit {
+        removeObservers()
+    }
+    
+    private func addObservers()  {
+        NotificationCenter.default.addObserver(self, selector: #selector(checkRows), name: NSNotification.Name(StoreValue.spreadsheetId.rawValue), object: nil)
+    }
+    
+    private func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(StoreValue.spreadsheetId.rawValue), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,11 +74,13 @@ class FirstViewController: BaseViewController {
         self.checkRows()
     }
     
-    private func checkRows() {
+    @objc private func checkRows() {
         if let sheet = Models.shared.currentSheet,
             (Models.shared.currentSheet?.success == true),
             (sheet.rows > 0) {
-            self.activityIndicator.startAnimating()
+            DispatchQueue.main.async {
+                self.activityIndicator.startAnimating()
+            }
             getData()
         } else {
             if let spreadheetId = PersistenceStore.retreiveValue(type: StoreValue.spreadsheetId) {
@@ -90,6 +105,7 @@ class FirstViewController: BaseViewController {
                     }
                 }
             } else {
+                self.activityIndicator.stopAnimating()
                 self.showError(title: "Error", message: RehbarError.SpreadSheetIdNotConfigured.message(id: nil))
             }
         }
@@ -214,6 +230,9 @@ extension FirstViewController : UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         Models.shared.searchText = nil
         filteredBrothers = Models.shared.brothers
+        if filteredBrothers.count > 0 {
+            filteredBrothers.removeFirst()
+        }
         self.tbView.reloadData()
         searchBar.resignFirstResponder()
     }
