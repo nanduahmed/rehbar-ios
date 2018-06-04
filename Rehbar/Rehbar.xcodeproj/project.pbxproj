@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45FAD6EE0B672E1BA3DDB5E4 /* Pods_Rehbar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 093F4CF2B27F0CA51EAE37A4 /* Pods_Rehbar.framework */; };
 		E2375161209A857400EAFFD8 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2375160209A857400EAFFD8 /* Persistence.swift */; };
 		E2375163209AA52600EAFFD8 /* BrotherListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2375162209AA52600EAFFD8 /* BrotherListTableViewCell.swift */; };
 		E23CF1182099189000829C98 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23CF1172099189000829C98 /* ThirdViewController.swift */; };
@@ -22,9 +23,13 @@
 		E2504D77209FD46700F02C06 /* BrotherDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2504D76209FD46700F02C06 /* BrotherDetailViewController.swift */; };
 		E251E00020A128690060C7B8 /* BrotherCommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E251DFFF20A128690060C7B8 /* BrotherCommentsTableViewCell.swift */; };
 		E251E00220A3BEEC0060C7B8 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = E251E00120A3BEEC0060C7B8 /* Error.swift */; };
+		E2E0A94C20C46AC900271C95 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = E2E0A94B20C46AC900271C95 /* credentials.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		093F4CF2B27F0CA51EAE37A4 /* Pods_Rehbar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rehbar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		83F0F8D6A1C785A7E7F638EF /* Pods-Rehbar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rehbar.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rehbar/Pods-Rehbar.release.xcconfig"; sourceTree = "<group>"; };
+		D32DAC941339C7A15F0D862B /* Pods-Rehbar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rehbar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rehbar/Pods-Rehbar.debug.xcconfig"; sourceTree = "<group>"; };
 		E2375160209A857400EAFFD8 /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Persistence.swift; path = Model/Models/Persistence.swift; sourceTree = "<group>"; };
 		E2375162209AA52600EAFFD8 /* BrotherListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BrotherListTableViewCell.swift; path = Controllers/BrotherListTableViewCell.swift; sourceTree = "<group>"; };
 		E23CF1172099189000829C98 /* ThirdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThirdViewController.swift; path = Controllers/TabViewControllers/ThirdViewController.swift; sourceTree = "<group>"; };
@@ -42,6 +47,7 @@
 		E2504D76209FD46700F02C06 /* BrotherDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BrotherDetailViewController.swift; path = FirstVC/BrotherDetail/BrotherDetailViewController.swift; sourceTree = "<group>"; };
 		E251DFFF20A128690060C7B8 /* BrotherCommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BrotherCommentsTableViewCell.swift; path = FirstVC/BrotherDetail/BrotherCommentsTableViewCell.swift; sourceTree = "<group>"; };
 		E251E00120A3BEEC0060C7B8 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Model/Models/Error/Error.swift; sourceTree = "<group>"; };
+		E2E0A94B20C46AC900271C95 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,12 +55,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45FAD6EE0B672E1BA3DDB5E4 /* Pods_Rehbar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA73E36D3C365ED1C1B015CB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D32DAC941339C7A15F0D862B /* Pods-Rehbar.debug.xcconfig */,
+				83F0F8D6A1C785A7E7F638EF /* Pods-Rehbar.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		DAD94E9F0E573CC9A2235590 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				093F4CF2B27F0CA51EAE37A4 /* Pods_Rehbar.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E23CF1152099184300829C98 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +105,8 @@
 			children = (
 				E243D6582093F1D5002A658E /* Rehbar */,
 				E243D6572093F1D5002A658E /* Products */,
+				DA73E36D3C365ED1C1B015CB /* Pods */,
+				DAD94E9F0E573CC9A2235590 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,6 +121,7 @@
 		E243D6582093F1D5002A658E /* Rehbar */ = {
 			isa = PBXGroup;
 			children = (
+				E2E0A94820C466CD00271C95 /* Configuration */,
 				E23CF1152099184300829C98 /* Controllers */,
 				E243D66D2093F353002A658E /* Model */,
 				E243D6592093F1D5002A658E /* AppDelegate.swift */,
@@ -150,6 +177,14 @@
 			name = BrotherDetail;
 			sourceTree = "<group>";
 		};
+		E2E0A94820C466CD00271C95 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				E2E0A94B20C46AC900271C95 /* credentials.plist */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -157,9 +192,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E243D66A2093F1D5002A658E /* Build configuration list for PBXNativeTarget "Rehbar" */;
 			buildPhases = (
+				3E2045367C144CB0520F5656 /* [CP] Check Pods Manifest.lock */,
 				E243D6522093F1D5002A658E /* Sources */,
 				E243D6532093F1D5002A658E /* Frameworks */,
 				E243D6542093F1D5002A658E /* Resources */,
+				F2D59FF24BE95F34D00FDFB5 /* [CP] Embed Pods Frameworks */,
+				02AA37E110F51591900F7405 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -219,10 +257,74 @@
 				E243D6662093F1D5002A658E /* LaunchScreen.storyboard in Resources */,
 				E243D6632093F1D5002A658E /* Assets.xcassets in Resources */,
 				E243D6612093F1D5002A658E /* Main.storyboard in Resources */,
+				E2E0A94C20C46AC900271C95 /* credentials.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		02AA37E110F51591900F7405 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Rehbar/Pods-Rehbar-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rehbar/Pods-Rehbar-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3E2045367C144CB0520F5656 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Rehbar-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F2D59FF24BE95F34D00FDFB5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Rehbar/Pods-Rehbar-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rehbar/Pods-Rehbar-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E243D6522093F1D5002A658E /* Sources */ = {
@@ -377,6 +479,7 @@
 		};
 		E243D66B2093F1D5002A658E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D32DAC941339C7A15F0D862B /* Pods-Rehbar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 26A666LL56;
@@ -392,6 +495,7 @@
 		};
 		E243D66C2093F1D5002A658E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83F0F8D6A1C785A7E7F638EF /* Pods-Rehbar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 26A666LL56;

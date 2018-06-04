@@ -7,14 +7,25 @@
 //
 
 import UIKit
+import GoogleAPIClientForREST
+import GoogleSignIn
 
-class FirstViewController: BaseViewController {
+class FirstViewController: BaseViewController , GIDSignInDelegate, GIDSignInUIDelegate {
     
     var filteredBrothers = [Brother]()
     
     @IBOutlet weak var tbView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var errorLabel: UILabel!
+    
+    // If modifying these scopes, delete your previously saved credentials by
+    // resetting the iOS simulator or uninstall the app.
+    private let scopes = [kGTLRAuthScopeSheetsSpreadsheetsReadonly]
+    
+    private let service = GTLRSheetsService()
+    let signInButton = GIDSignInButton()
+    //let output = UITextView()
+
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     var gettingSheetsData = false
@@ -33,6 +44,22 @@ class FirstViewController: BaseViewController {
         self.tbView.addSubview(self.refreshControl)
         self.checkRows()
         self.addObservers()
+        
+        /*GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().scopes = scopes
+        GIDSignIn.sharedInstance().signInSilently()
+        
+        // Add the sign-in button.
+        tbView.addSubview(signInButton)
+        
+        // Add a UITextView to display output.
+        output.frame = view.bounds
+        output.isEditable = false
+        output.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        output.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        output.isHidden = true
+        tbView.addSubview(output);*/
           // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -50,6 +77,7 @@ class FirstViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         /*if let searchText = Models.shared.searchText,
             (searchText.count > 0) {
         } else {
@@ -154,7 +182,19 @@ class FirstViewController: BaseViewController {
             })
         }
     }
-
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
+              withError error: Error!) {
+        if let error = error {
+            showError(title: "Authentication Error", message: error.localizedDescription)
+            self.service.authorizer = nil
+        } else {
+            self.signInButton.isHidden = true
+            //self.output.isHidden = false
+            self.service.authorizer = user.authentication.fetcherAuthorizer()
+            //listMajors()
+        }
+    }
 }
 
 extension FirstViewController : UITableViewDataSource , UITableViewDelegate {

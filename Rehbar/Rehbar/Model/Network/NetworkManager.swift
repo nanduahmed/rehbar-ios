@@ -24,31 +24,40 @@ class NetworkManager {
         
         let apiKey = "AIzaSyBB4wCIVJbzyg_Fg_uTie8AtLp6Mg8_SYU"
         let url = "https://maps.googleapis.com/maps/api/geocode/json?address=\(address)&sensor=false&key=\(apiKey)"
-        let aUrl = URL.init(string: url)
-        
-        let task = URLSession.shared.dataTask(with: aUrl!) { (data, resp, error) in
-            if error != nil {
-                print(error ?? "error")
-                completion(false, nil, nil)
-            } else {
-                if let usableData = data {
-                    print(usableData) //JSONSerialization
-                    if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String:Any] {
-                        Models.shared.create(data: json!)
-                        completion(true, json, Models.shared.all)
+        if let aUrl = URL.init(string: url) {
+            var urlRequest = URLRequest(url: aUrl, cachePolicy: URLRequest.CachePolicy.reloadIgnoringCacheData, timeoutInterval: 5000)
+            
+            urlRequest.addValue("com.anz.apps.Rehbar", forHTTPHeaderField: "X-Ios-Bundle-Identifier")
+            
+            let task = URLSession.shared.dataTask(with: urlRequest) { (data, resp, error) in
+                if error != nil {
+                    print(error ?? "error")
+                    completion(false, nil, nil)
+                } else {
+                    if let usableData = data {
+                        print(usableData) //JSONSerialization
+                        if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String:Any] {
+                            Models.shared.create(data: json!)
+                            completion(true, json, Models.shared.all)
+                        }
                     }
                 }
             }
-            
+            task.resume()
+        } else {
+            completion(false, nil , nil)
         }
-        task.resume()
     }
     
     func getIndexing(spreadSheetId:String , completion:@escaping NetworkCompletionType)  {
         let apiKey = "AIzaSyAKyRLKcXYyX4pvSiqev_LbVu1_asz-oQk"
         let url = "https://sheets.googleapis.com/v4/spreadsheets/\(spreadSheetId)?key=\(apiKey)"
         if let aUrl = URL.init(string: url) {
-            let task = URLSession.shared.dataTask(with: aUrl) { (data, resp, error) in
+            var urlRequest = URLRequest(url: aUrl, cachePolicy: URLRequest.CachePolicy.reloadIgnoringCacheData, timeoutInterval: 5000)
+            
+            urlRequest.addValue("com.anz.apps.Rehbar", forHTTPHeaderField: "X-Ios-Bundle-Identifier")
+            
+            let task = URLSession.shared.dataTask(with: urlRequest) { (data, resp, error) in
                 if error != nil {
                     print(error ?? "error")
                     completion(false, nil, nil)
@@ -63,8 +72,8 @@ class NetworkManager {
                 
             }
             task.resume()
-        }else {
-            completion(false, nil , nil)
+        } else {
+            completion(false, nil , RehbarError.InvalidUrl)
         }
         
     }
@@ -82,7 +91,12 @@ class NetworkManager {
         let url = "https://sheets.googleapis.com/v4/spreadsheets/\(spreadsheetId)/values:batchGet?majorDimension=\(majorDim)&ranges=\(ranges)&valueRenderOption=\(renderOption)&key=\(apiKey)"
         
         if let aUrl = URL.init(string: url) {
-            let task = URLSession.shared.dataTask(with: aUrl) { (data, resp, error) in
+            var urlRequest = URLRequest(url: aUrl, cachePolicy: URLRequest.CachePolicy.reloadIgnoringCacheData, timeoutInterval: 5000)
+            
+            urlRequest.addValue("com.anz.apps.Rehbar", forHTTPHeaderField: "X-Ios-Bundle-Identifier")
+            
+            let task = URLSession.shared.dataTask(with: urlRequest) { (data, resp, error) in
+
                 if error != nil {
                     print(error ?? "error")
                     completion(false, nil, nil, nil)
